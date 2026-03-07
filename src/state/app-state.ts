@@ -4,6 +4,7 @@ export interface AppState {
   renderedSectionCount: number;
   appendCount: number;
   messageCount: number;
+  hiddenMessageCount: number;
 }
 
 export function createInitialState(): AppState {
@@ -12,13 +13,14 @@ export function createInitialState(): AppState {
     virtualMeters: 0,
     renderedSectionCount: 0,
     appendCount: 0,
-    messageCount: 0
+    messageCount: 0,
+    hiddenMessageCount: 0
   };
 }
 
 export function accumulateVirtualDistance(state: AppState): void {
   const nextY = window.scrollY;
-  const delta = Math.max(0, nextY - state.lastScrollY);
+  const delta = nextY - state.lastScrollY;
   state.lastScrollY = nextY;
-  state.virtualMeters += delta * 0.012;
+  state.virtualMeters = Math.max(0, state.virtualMeters + delta * 0.012);
 }

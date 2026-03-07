@@ -56,6 +56,12 @@ body {
   opacity: 0.35;
 }
 
+.void-label.emerald {
+  color: #2fbf8f;
+  text-shadow: 0 0 10px rgba(47, 191, 143, 0.25);
+  opacity: 1;
+}
+
 .stats-panel {
   position: fixed;
   right: 22px;
@@ -84,6 +90,27 @@ body {
   font-size: 0.92rem;
 }
 
+.stats-actions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stats-btn {
+  border: 1px solid var(--line);
+  background: #f9fbf4;
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.stats-btn:hover {
+  background: #eef4e3;
+}
+
 @media (max-width: 900px) {
   .stats-panel {
     position: sticky;
@@ -93,4 +120,3 @@ body {
     right: auto;
   }
 }
-

@@ -19,5 +19,5 @@ export function updateSectionElement(section: HTMLElement, content: GeneratedSec
   }
   label.textContent = content.text;
   label.classList.toggle("muted", !content.hasMessage);
+  label.classList.toggle("emerald", content.isHiddenMessage);
 }
-

@@ -1,46 +1,55 @@
-const MESSAGE_PROBABILITY = 0.18;
+import messagesData from "../data/messages.json";
+import hiddenMessagesData from "../data/hidden-messages.json";
 
-const VOID_LINES = [
-  "빈 공간 안정성 유지 중",
-  "의미 탐색 실패: 계속 진행",
-  "아직도 내려가는 중입니다",
-  "무의미 지표가 정상 범위입니다",
-  "스크롤 엔진: 멈출 이유 없음",
-  "이 구간에는 아무것도 없습니다",
-  "당신은 무엇을 위해 내려가나요?",
-  "의미없다는 것은 의미가 있다는 뜻입니다",
-  "빈 공간에서 새로운 가능성이 자랍니다",
-  "아무것도 없는 곳에서 무언가가 시작됩니다",
-  "공허함 속에서 창조가 이루어집니다",
-  "빈 공간은 무한한 잠재력을 품고 있습니다",
-  "의미 없는 것은 때로는 가장 의미 있는 것입니다",
-  "빈 공간은 상상력의 캔버스입니다",
-  "아무것도 없는 곳에서 모든 것이 가능합니다",
-  "공허함은 새로운 아이디어의 탄생지입니다",
-  "빈 공간은 창의성의 원천입니다",
-  "의미 없는 것은 때로는 가장 중요한 것입니다",
-  "빈 공간은 무한한 가능성의 시작입니다",
-  "아무것도 없는 곳에서 새로운 세계가 열립니다"
-];
+const MESSAGE_PROBABILITY = 0.18;
+const HIDDEN_MESSAGE_PROBABILITY = 0.005;
+const FALLBACK_MESSAGE = "void stream stable";
+const HIDDEN_FALLBACK_MESSAGE = "emerald signal";
 
 export interface GeneratedSectionContent {
   minHeightPx: number;
   text: string;
   hasMessage: boolean;
+  isHiddenMessage: boolean;
 }
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function getMessageList(): string[] {
+  const raw = messagesData.voidMessages;
+  if (!Array.isArray(raw)) {
+    return [FALLBACK_MESSAGE];
+  }
+  const cleaned = raw.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+  return cleaned.length > 0 ? cleaned : [FALLBACK_MESSAGE];
+}
+
+function getHiddenMessageList(): string[] {
+  const raw = hiddenMessagesData.hiddenMessages;
+  if (!Array.isArray(raw)) {
+    return [HIDDEN_FALLBACK_MESSAGE];
+  }
+  const cleaned = raw.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+  return cleaned.length > 0 ? cleaned : [HIDDEN_FALLBACK_MESSAGE];
+}
+
 export function generateSectionContent(index: number): GeneratedSectionContent {
   const minHeightPx = randomInt(240, 520);
-  const hasMessage = Math.random() < MESSAGE_PROBABILITY;
-  const text = hasMessage ? VOID_LINES[randomInt(0, VOID_LINES.length - 1)] : `void-${index}`;
+  const isHiddenMessage = Math.random() < HIDDEN_MESSAGE_PROBABILITY;
+  const hasMessage = isHiddenMessage || Math.random() < MESSAGE_PROBABILITY;
+  const messageList = getMessageList();
+  const hiddenMessageList = getHiddenMessageList();
+  const text = isHiddenMessage
+    ? hiddenMessageList[randomInt(0, hiddenMessageList.length - 1)]
+    : hasMessage
+      ? messageList[randomInt(0, messageList.length - 1)]
+      : `void-${index}`;
   return {
     minHeightPx,
     text,
-    hasMessage
+    hasMessage,
+    isHiddenMessage
   };
 }
-

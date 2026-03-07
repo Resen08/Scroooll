@@ -39,5 +39,8 @@ export class SectionPool {
     if (content.hasMessage) {
       this.state.messageCount += 1;
     }
+    if (content.isHiddenMessage) {
+      this.state.hiddenMessageCount += 1;
+    }
   }
 }
