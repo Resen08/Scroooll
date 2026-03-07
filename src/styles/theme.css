@@ -1,0 +1,8 @@
+.void-section:nth-child(odd) {
+  background: linear-gradient(180deg, rgba(249, 251, 242, 0.5), rgba(255, 255, 255, 0));
+}
+
+.void-section:nth-child(7n) .void-label {
+  font-style: italic;
+  opacity: 0.6;
+}

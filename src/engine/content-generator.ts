@@ -1,0 +1,46 @@
+const MESSAGE_PROBABILITY = 0.18;
+
+const VOID_LINES = [
+  "빈 공간 안정성 유지 중",
+  "의미 탐색 실패: 계속 진행",
+  "아직도 내려가는 중입니다",
+  "무의미 지표가 정상 범위입니다",
+  "스크롤 엔진: 멈출 이유 없음",
+  "이 구간에는 아무것도 없습니다",
+  "당신은 무엇을 위해 내려가나요?",
+  "의미없다는 것은 의미가 있다는 뜻입니다",
+  "빈 공간에서 새로운 가능성이 자랍니다",
+  "아무것도 없는 곳에서 무언가가 시작됩니다",
+  "공허함 속에서 창조가 이루어집니다",
+  "빈 공간은 무한한 잠재력을 품고 있습니다",
+  "의미 없는 것은 때로는 가장 의미 있는 것입니다",
+  "빈 공간은 상상력의 캔버스입니다",
+  "아무것도 없는 곳에서 모든 것이 가능합니다",
+  "공허함은 새로운 아이디어의 탄생지입니다",
+  "빈 공간은 창의성의 원천입니다",
+  "의미 없는 것은 때로는 가장 중요한 것입니다",
+  "빈 공간은 무한한 가능성의 시작입니다",
+  "아무것도 없는 곳에서 새로운 세계가 열립니다"
+];
+
+export interface GeneratedSectionContent {
+  minHeightPx: number;
+  text: string;
+  hasMessage: boolean;
+}
+
+function randomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function generateSectionContent(index: number): GeneratedSectionContent {
+  const minHeightPx = randomInt(240, 520);
+  const hasMessage = Math.random() < MESSAGE_PROBABILITY;
+  const text = hasMessage ? VOID_LINES[randomInt(0, VOID_LINES.length - 1)] : `void-${index}`;
+  return {
+    minHeightPx,
+    text,
+    hasMessage
+  };
+}
+
