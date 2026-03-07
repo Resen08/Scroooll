@@ -6,6 +6,10 @@ export interface SectionPoolConfig {
   initialSections: number;
 }
 
+interface AppendOptions {
+  trackState: boolean;
+}
+
 export class SectionPool {
   private readonly container: HTMLElement;
   private readonly state: AppState;
@@ -16,6 +20,7 @@ export class SectionPool {
     this.container = container;
     this.state = state;
     this.initialSections = config.initialSections;
+    this.nextSectionIndex = state.renderedSectionCount;
   }
 
   init(): void {
@@ -26,21 +31,33 @@ export class SectionPool {
 
   appendOnce(): void {
     const section = createSectionElement();
-    this.fillSection(section);
+    this.fillSection(section, { trackState: true });
     this.container.appendChild(section);
     this.state.appendCount += 1;
   }
 
-  private fillSection(section: HTMLElement): void {
+  appendForRestore(): void {
+    const section = createSectionElement();
+    this.fillSection(section, { trackState: false });
+    this.container.appendChild(section);
+  }
+
+  setNextSectionIndex(index: number): void {
+    this.nextSectionIndex = Math.max(0, Math.floor(index));
+  }
+
+  private fillSection(section: HTMLElement, options: AppendOptions): void {
     const content = generateSectionContent(this.nextSectionIndex);
     updateSectionElement(section, content);
     this.nextSectionIndex += 1;
-    this.state.renderedSectionCount += 1;
-    if (content.hasMessage) {
-      this.state.messageCount += 1;
-    }
-    if (content.isHiddenMessage) {
-      this.state.hiddenMessageCount += 1;
+    if (options.trackState) {
+      this.state.renderedSectionCount += 1;
+      if (content.hasMessage) {
+        this.state.messageCount += 1;
+      }
+      if (content.isHiddenMessage) {
+        this.state.hiddenMessageCount += 1;
+      }
     }
   }
 }
