@@ -8,9 +8,9 @@ export class StatsPanel {
 
   constructor(root: HTMLElement) {
     this.root = root;
-    this.distanceEl = this.makeRow("depth", "0.0m");
-    this.messagesEl = this.makeRow("messages", "0");
-    this.hiddenEl = this.makeRow("hidden emerald", "0");
+    this.distanceEl = this.makeRow("거리", "0.0m");
+    this.messagesEl = this.makeRow("메시지", "0");
+    this.hiddenEl = this.makeRow("숨겨진 메시지", "0");
     this.makeActions();
   }
 
